@@ -8,11 +8,13 @@ import './services/helpers/Secrets'
 import { errorHandler } from './middlewares/ErrorHandler';
 import { jitoRouter } from './routes/v1/Jito';
 import { JitoManager } from './services/jito/JitoManager';
+import { pingRouter } from './routes/v1/Ping';
 
 const app = express();
 app.use(json());
 app.use(cors());
 app.use(jitoRouter);
+app.use(pingRouter);
 
 app.use(errorHandler);
 
