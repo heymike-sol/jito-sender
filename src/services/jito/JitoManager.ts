@@ -1,5 +1,7 @@
 import * as web3 from '@solana/web3.js';
 import * as jito from 'jito-ts';
+import { JitoError } from '../../entities/JitoError';
+import { JitoLog } from '../../entities/JitoLog';
 
 export class JitoManager {
 
@@ -18,10 +20,14 @@ export class JitoManager {
             const bundleId = await this.searcherClient.sendBundle(bundle);
             this.myBundleIds.push(bundleId);
             console.log(new Date(), 'JITO', 'sendBundle', 'bundleId:', bundleId);
+
+            JitoLog.create({ droplet: process.env.DROPLET, bundleId: bundleId, createdAt: new Date() });
+
             return bundleId;
         }
-        catch (error){
+        catch (error:any){
             console.log(new Date(), 'JITO', 'sendBundle', 'error:', error);
+            JitoError.updateOne({ error: error.message }, { $inc: { count: 1 } }, { upsert: true, setDefaultsOnInsert: true }).exec();
         }
         return undefined;
     }

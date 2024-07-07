@@ -3,6 +3,7 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import 'reflect-metadata';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 import './services/helpers/Secrets'
 import { errorHandler } from './middlewares/ErrorHandler';
@@ -19,8 +20,12 @@ app.use(pingRouter);
 app.use(errorHandler);
 
 const start = async () => {
+    await mongoose.connect(process.env.MONGODB_CONNECTION_URL!);
+    console.log(new Date(), 'Connected to mongodb!');
+
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
+    
         JitoManager.initSearcherClient();
         console.log(`Listening on port ${port}.`);
     });

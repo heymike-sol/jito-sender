@@ -15,3 +15,8 @@ if (!process.env.JITO_URL) {
 if (!process.env.DROPLET) {
     throw new Error('DROPLET must be defined');
 }
+
+if (!process.env.MONGODB_CONNECTION_URL) {
+    throw new Error('MONGODB_CONNECTION_URL must be defined');
+}
+
